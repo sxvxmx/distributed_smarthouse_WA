@@ -1,0 +1,14 @@
+CREATE TABLE peripherals(
+	id SERIAL,
+	name TEXT,
+	attribute_name TEXT
+)
+
+CREATE TABLE attributes(
+	attribute_name TEXT,
+    var_type TEXT,
+    up_limit TEXT,
+    down_limit TEXT,
+    context TEXT,
+    alterability TEXT
+)
