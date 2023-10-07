@@ -38,6 +38,6 @@ async def set_base_item(file:UploadFile, base_name:str):
     return crud.set_item(base.SessionLocal(), base_name=base_name, file=file)
 
 @app.post("/del_base_item/{base_name}")
-async def set_base_item(file:UploadFile, base_name:str):
+async def del_base_item(file:UploadFile, base_name:str):
     file = await file.read()
     return crud.del_item(base.SessionLocal(), base_name=base_name, file=file)
