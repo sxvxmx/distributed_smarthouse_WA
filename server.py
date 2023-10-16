@@ -30,7 +30,11 @@ def read_root(request: Request, start_time: datetime = Depends(get_start_time)):
 
 @app.get("/get_base/{base_name}")
 def get_base(base_name:str):
-    return crud.get_all(base.SessionLocal(), base_name=base_name)
+    return crud.get_table(base.SessionLocal(), base_name=base_name)
+
+@app.get("/get_all/")
+def get_join_base():
+    return crud.get_all(base.SessionLocal())
 
 @app.post("/set_base_item/{base_name}")
 async def set_base_item(file:UploadFile, base_name:str):

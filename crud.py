@@ -11,9 +11,14 @@ def make_filt(file):
     filt = filt[:-5]
     return filt
 
-def get_all(db: Session, base_name):
+def get_table(db: Session, base_name):
     table = model.table_dict[base_name]
     return db.query(table).all()
+
+#untested ))
+def get_all(db: Session):
+    tables = list(model.table_dict.values())
+    return db.query(*tables).all()
 
 def set_item(db: Session, base_name, file):
     file = yaml.safe_load(file)
