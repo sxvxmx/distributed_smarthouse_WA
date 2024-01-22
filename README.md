@@ -6,3 +6,8 @@ Project Goals:
 1) Develop a secure and scalable RESTful API server using FastAPI
 2) Integrate PostgreSQL database to store device, sensor, and actuator data
 3) Provide endpoints for managing devices, sensors, and actuators
+
+Project Success Metrics:
+1) Robustness and scalability of the API server
+2) Accuracy and reliability of data
+3) User satisfaction with the overall smart home experience
