@@ -21,14 +21,16 @@ def get_all(db: Session):
     return db.query(*tables).all()
 
 def set_item(db: Session, base_name, file):
-    file = yaml.safe_load(file)
+    #unteseted
+    file = yaml.dump(file)
     table = model.table_dict[base_name]
     db.add(table(**file))
     db.commit()
     return True
 
 def del_item(db: Session, base_name, file):
-    file = yaml.safe_load(file)
+    #unteseted
+    file = yaml.dump(file)
     table = model.table_dict[base_name]
 
     filt = make_filt(file)
