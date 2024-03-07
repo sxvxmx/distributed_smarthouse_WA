@@ -15,8 +15,8 @@ class Table2(base.Base):
 
     attribute_name = Column(Text, primary_key= True)
     var_type = Column(Text)
-    up_limit = Column(Text)
-    down_limit = Column(Text)
+    upper_limit = Column(Text)
+    lower_limit = Column(Text)
     context = Column(Text)
     alterability = Column(Text)
 
