@@ -1,0 +1,21 @@
+\documentclass{article}
+
+\begin{document}
+\section*{endpoint list:}
+\subsection*{get type}
+\begin{enumerate}
+    \item /ping \\ returns: "pong"
+    \item / \\ returns: html with a gif and time the server have been online.
+    \item /get\_table/\{table\_name\} \\ returns: tuples of a single instace of the table from database.
+    \item /get\_all/ \\ returns: all tuples by joining all tables.
+    \item /get\_var \\ returns: all tuples, but only for devices that have: "variable : true".
+\end{enumerate}
+
+\subsection*{post type}
+\begin{enumerate}
+    \item /set\_device \\ expects: json file (see template test\_files/test\_device\_1.json) to put it in the database.\\ returns: true 
+    \item /del\_table\_item/\{table\_name\} \\ expects: json file (should be table values by columns) to use filter by value inside the file and delete those tuples.\\ returns: true
+\end{enumerate}
+
+
+\end{document}

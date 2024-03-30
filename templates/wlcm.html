@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>enter point</title>
+</head>
+<body onload="updateServerTime()">
+    <h3>workin rn</h3>
+    <p id="serverTime"></p>
+    <img src="static/giphy2.gif">
+<script>
+    // Function to update the displayed time
+    function updateServerTime() {
+        var startTime = "{{ start_time }}";
+        var currentTime = new Date();
+        var elapsedTime = currentTime - new Date(startTime);
+        
+        var hours = Math.floor(elapsedTime / (60 * 60 * 1000));
+        var minutes = Math.floor((elapsedTime % (60 * 60 * 1000)) / (60 * 1000));
+        var seconds = Math.floor((elapsedTime % (60 * 1000)) / 1000);
+
+        // Format the time
+        var formattedTime = hours + "h " + minutes + "m " + seconds + "s";
+
+        // Update the HTML element
+        document.getElementById("serverTime").textContent = "Server has been running for: " + formattedTime;
+    }
+    setInterval(function () {
+        updateServerTime();
+    }, 1000);
+</script>
+</body>
+</html>

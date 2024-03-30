@@ -1,0 +1,21 @@
+{
+    "id":1,
+    "name":"someone",
+    "attributes":[
+            {"name": "sometest1",
+            "variable" : true, 
+            "var_type" : "float",
+            "upper_limit" : 100, 
+            "lower_limit" : 10, 
+            "is_input" : true, 
+            "is_output" : true },
+    
+            {"name": "sometest2",
+            "variable" : true, 
+            "var_type" : "float",
+            "upper_limit" : 15, 
+            "lower_limit" : 10, 
+            "is_input" : false, 
+            "is_output" : false }
+        ]
+    }

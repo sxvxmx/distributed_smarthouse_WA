@@ -1,0 +1,8 @@
+uvicorn
+fastapi
+pyyaml
+sqlalchemy
+psycopg2
+jinja2
+python-multipart
+pytz
