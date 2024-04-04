@@ -5,7 +5,6 @@ from sqlalchemy.sql import text
 from sqlalchemy.orm import Query
 
 from model import table_dict, Table1, Table2
-
 from base import SessionLocal
 
 

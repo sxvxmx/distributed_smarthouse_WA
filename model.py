@@ -1,7 +1,12 @@
 from sqlalchemy import Boolean, Column, Integer, Identity, Text, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
 
-from base import Base, engine
+from base import engine
+
+# Создание базового класса для определения моделей
+Base = declarative_base()
+
 
 class Table1(Base):
     __tablename__ = "peripherals"
