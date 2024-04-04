@@ -4,7 +4,9 @@ import yaml
 from sqlalchemy.sql import text
 from sqlalchemy.orm import Query
 
-from base import SessionLocal, table_dict, Table1, Table2
+from model import table_dict, Table1, Table2
+
+from base import SessionLocal
 
 
 def make_filter(file):
