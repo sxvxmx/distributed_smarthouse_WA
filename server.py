@@ -12,7 +12,6 @@ from crud import *
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="resources"), name="static")
 templates = Jinja2Templates(directory="templates")
-
 server_start_time = None
 
 
@@ -26,18 +25,30 @@ async def startup_event():
     server_start_time = datetime.now(tz=timezone('Europe/Moscow'))
 
 
-@app.get("/ping")
-def ping():
-    return "pong"
-
-
 @app.get("/", response_class=HTMLResponse)
 def read_root(request: Request, start_time: datetime = Depends(get_start_time)):
     return templates.TemplateResponse("wlcm.html", {"request": request, "start_time": start_time})
 
 
+@app.get("/ping")
+def ping():
+    return "pong"
+
+
+@app.post("/set_config")
+async def set_config_item(file: UploadFile):
+    file = await file.read()
+    return set_config(file=file)
+
+
+@app.post("/set_device")
+async def set_device_item(file: UploadFile):
+    file = await file.read()
+    return set_device(file=file)
+
+
 @app.get("/get_table/{table_name}")
-def get_table(table_name: str):
+def get_table_(table_name: str):
     return get_table(table_name=table_name)
 
 
@@ -49,12 +60,6 @@ def get_join_base():
 @app.get("/get_var")
 def get_join_base():
     return get_var()
-
-
-@app.post("/set_device")
-async def set_base_item(file: UploadFile):
-    file = await file.read()
-    return set_device(file=file)
 
 
 @app.post("/set_table_item/{table_name}")

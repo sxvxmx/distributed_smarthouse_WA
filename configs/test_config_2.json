@@ -1,0 +1,24 @@
+{
+  "id": 2,
+  "description": "Samsung Lamp",
+  "attributes": [
+    {
+      "name": "brightness",
+      "variable": true,
+      "var_type": "float",
+      "upper_limit": 50,
+      "lower_limit": 10,
+      "is_input": true,
+      "is_output": true
+    },
+    {
+      "name": "mode",
+      "variable": true,
+      "var_type": "int",
+      "upper_limit": 1,
+      "lower_limit": 0,
+      "is_input": true,
+      "is_output": false
+    }
+  ]
+}

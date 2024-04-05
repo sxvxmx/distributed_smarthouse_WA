@@ -1,100 +1,84 @@
 import json
-import yaml
 
 from sqlalchemy.sql import text
 from sqlalchemy.orm import Query
+from sqlalchemy.orm import Session
 
-from model import table_dict, Table1, Table2
+from model import Table1, Table2
 from base import SessionLocal
 
-
-def make_filter(file):
-    filt = ""
-    for i in file:
-        filt += str(i) + " = " + f"'{file[i]}'" + " and "
-    filt = filt[:-5]
-    return filt
+from functools import wraps
 
 
-def unmap_join(mapper: list[tuple]):
-    out = []
-    for i in mapper:
-        sub = {}
-        for o in i:
-            sub = sub | o.__dict__
-        out.append(sub)
-    return out
+def db_operation(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        db: Session = SessionLocal()
+
+        try:
+            success = func(db, *args, **kwargs)
+            return success
+
+        except Exception as e:
+            print(f"Exception: {e}")
+            db.rollback()
+            return False
+
+        finally:
+            db.close()
+
+    return wrapper
 
 
-def notexist(table, session, feature):
-    q = Query(table, session=session).all()
-    t = True
-    for o in q:
-        if feature in o:
-            t = False
-    return t
+@db_operation
+def set_entity(db, file, entity_class):
+    data = json.loads(file)
+    uid = data.get("id")
+    entity_is_existing = db.query(entity_class).filter(entity_class.id == uid).first()
 
+    if entity_is_existing:
+        return False
 
-def get_table(table_name):
-    db = SessionLocal()
-    table = table_dict[table_name]
-    return db.query(table).all()
-
-
-def get_all():
-    db = SessionLocal()
-    tables = list(table_dict.values())
-    qr = Query(tables, session=db).filter(Table1.attribute_name == Table2.name).all()
-    return unmap_join(qr)
-
-
-def get_var():
-    db = SessionLocal()
-    tables = list(table_dict.values())
-    qr = Query(tables, session=db).filter(Table1.attribute_name == Table2.name).filter(Table2.variable == True).all()
-    return unmap_join(qr)
-
-
-def set_item(table_name, file):
-    db = SessionLocal()
-    # unteseted
-    file = file.decode('utf-8')
-    json_data = json.loads(file)
-    file = yaml.dump(data=json_data)
-    file = yaml.safe_load(file)
-    table = table_dict[table_name]
-    db.add(table(**file))
+    entity = entity_class(**data)
+    db.add(entity)
     db.commit()
     return True
 
 
 def set_device(file):
-    db = SessionLocal()
-    file = file.decode('utf-8')
-    json_data = json.loads(file)
-    file = yaml.dump(data=json_data)
-    file = yaml.safe_load(file)
-    for i in file["attributes"]:
-        table = table_dict["attributes"]
-        if notexist(table.name, db, i["name"]):
-            db.add(table(**i))
-        table = table_dict["peripherals"]
-        if notexist(table.id, db, file["id"]):
-            db.add(table(**{"id": file["id"], "name": file["name"], "attribute_name": i["name"]}))
-    db.commit()
+    return set_entity(file, Table1)
+
+
+def set_config(file):
+    return set_entity(file, Table2)
+
+
+def get_table(table_name):
+    db: Session = SessionLocal()
+    if Table1.__tablename__ == table_name:
+        table = Table1
+    elif Table2.__tablename__ == table_name:
+        table = Table2
+    else:
+        return False
+    return db.query(table).all()
+
+
+def get_all():
+    db: Session = SessionLocal()
+    return True
+
+
+def get_var():
+    db: Session = SessionLocal()
+    return True
+
+
+def set_item(table_name, file):
+    db: Session = SessionLocal()
     return True
 
 
 def del_item(table_name, file):
-    db = SessionLocal()
-    # unteseted
-    file = file.decode('utf-8')
-    json_data = json.loads(file)
-    file = yaml.dump(data=json_data)
-    file = yaml.safe_load(file)
-    table = table_dict[table_name]
-
-    filt = make_filter(file)
-    db.query(table).filter(text(filt)).delete()
-    db.commit()
+    db: Session = SessionLocal()
     return True
