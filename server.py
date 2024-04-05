@@ -36,19 +36,9 @@ def read_root(request: Request, start_time: datetime = Depends(get_start_time)):
     return templates.TemplateResponse("wlcm.html", {"request": request, "start_time": start_time})
 
 
-@app.get("/get_table/{table_name}")
-def get_table(table_name: str):
-    return get_table(table_name=table_name)
-
-
-@app.get("/get_all/")
-def get_join_base():
-    return get_all()
-
-
-@app.get("/get_var")
-def get_join_base():
-    return get_var()
+@app.get("/get_table")
+def get_table():
+    return get_table()
 
 
 @app.post("/set_device")
@@ -57,13 +47,7 @@ async def set_base_item(file: UploadFile):
     return set_device(file=file)
 
 
-@app.post("/set_table_item/{table_name}")
-async def set_table_item(file: UploadFile, table_name: str):
+@app.post("/del_table_item")
+async def del_table_item(file: UploadFile):
     file = await file.read()
-    return set_item(table_name=table_name, file=file)
-
-
-@app.post("/del_table_item/{table_name}")
-async def del_table_item(file: UploadFile, table_name: str):
-    file = await file.read()
-    return del_item(table_name=table_name, file=file)
+    return del_item(file=file)
