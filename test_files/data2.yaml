@@ -1,6 +1,0 @@
-attribute_name: "brightness"
-var_type: "int"
-up_limit: "100"
-down_limit: "0"
-context: "something with light"
-alterability: "yes"

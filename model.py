@@ -5,7 +5,7 @@ from base import Base, engine
 
 class Table1(Base):
     __tablename__ = "peripherals"
-    id = Column(Integer, Identity(start=1), primary_key=True)
+    id = Column(Integer, primary_key=True)
     name = Column(Text)
     attributes = Column(Text)
     # attribute_name = Column(Text, ForeignKey("attributes.name"))

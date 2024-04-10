@@ -5,21 +5,16 @@ from sqlalchemy.sql import text
 from sqlalchemy.orm import Query
 from sqlalchemy import func
 
-from model import table_dict, Table1
+from model import Table1
 
 from base import SessionLocal
 
-
-def make_filter(file):
-    filt = ""
-    for i in file:
-        filt += str(i) + " = " + f"'{file[i]}'" + " and "
-    filt = filt[:-5]
-    return filt
-
-
-def notexist(session, id):
-    if id > Query(func.max(Table1.id),session=session):
+def notexist(session, dev_id):
+    print(Query(func.max(Table1.id),session=session).first())
+    val = Query(func.max(Table1.id),session=session).first()[0]
+    if val == None:
+        return True
+    if dev_id > val:
         return True
     return False
 
@@ -35,20 +30,14 @@ def set_device(file):
     json_data = json.loads(file)
     file = yaml.dump(data=json_data)
     file = yaml.safe_load(file)
-    if notexist(db, file):
-        db.add(**{"name":file["name"],"attributes":str(file["attributes"])})
+    if notexist(db, file["id"]):
+        db.add(Table1(**{"id":file["id"],"name":file["name"],"attributes":str(file["attributes"])}))
     db.commit()
     return True
 
 
-def del_item(file):
+def del_item(num):
     db = SessionLocal()
-    file = file.decode('utf-8')
-    json_data = json.loads(file)
-    file = yaml.dump(data=json_data)
-    file = yaml.safe_load(file)
-    table = table_dict["peripherals"]
-    filt = make_filter(file)
-    db.query(table).filter(text(filt)).delete()
+    db.query(Table1).filter(Table1.id == int(num)).delete()
     db.commit()
     return True

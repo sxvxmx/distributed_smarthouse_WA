@@ -37,7 +37,7 @@ def read_root(request: Request, start_time: datetime = Depends(get_start_time)):
 
 
 @app.get("/get_table")
-def get_table():
+def get_full_table():
     return get_table()
 
 
@@ -47,7 +47,6 @@ async def set_base_item(file: UploadFile):
     return set_device(file=file)
 
 
-@app.post("/del_table_item")
-async def del_table_item(file: UploadFile):
-    file = await file.read()
-    return del_item(file=file)
+@app.post("/del_by_id/{num}")
+async def del_table_item(num):
+    return del_item(num = num)
